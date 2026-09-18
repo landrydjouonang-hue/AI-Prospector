@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>AI Prospector</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="brand-icon">P</span>
+      <span class="brand-name">AI Prospector</span>
+      <span id="usage-counter" class="usage-counter" title="API calls made this session">0 calls</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="search">Search</button>
+      <button class="tab-btn" data-tab="results">Results</button>
+      <button class="tab-btn" data-tab="crm">CRM</button>
+      <button class="tab-btn" data-tab="settings">Settings</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- SEARCH TAB -->
+    <section id="tab-search" class="tab-panel active">
+      <div id="presets-row" class="presets-row"></div>
+
+      <label class="field-label">Search mode</label>
+      <div class="mode-select">
+        <button class="mode-btn active" data-mode="hse">HSE Training</button>
+        <button class="mode-btn" data-mode="agency">Agency Hiring</button>
+        <button class="mode-btn" data-mode="custom">Custom</button>
+      </div>
+
+      <label class="field-label" for="query-input">
+        <span id="query-hint">e.g. "companies offering Work at Height training"</span>
+      </label>
+      <input type="text" id="query-input" placeholder="Enter your search focus..." />
+
+      <label class="field-label" for="region-input">Region (optional)</label>
+      <input type="text" id="region-input" placeholder="e.g. West Africa, offshore Gulf of Guinea..." />
+
+      <div class="inline-actions">
+        <button id="search-btn" class="primary-btn">Find companies</button>
+        <button id="save-preset-btn" class="secondary-btn wide-secondary">Save as preset</button>
+      </div>
+      <div id="search-status" class="status-line"></div>
+    </section>
+
+    <!-- RESULTS TAB -->
+    <section id="tab-results" class="tab-panel">
+      <div class="results-toolbar">
+        <label class="checkbox-label"><input type="checkbox" id="hide-low-confidence" /> Hide low confidence</label>
+        <div class="bulk-actions">
+          <button id="bulk-analyze-btn" class="secondary-btn">Analyze all</button>
+          <button id="bulk-contacts-btn" class="secondary-btn">Find contacts (all)</button>
+        </div>
+      </div>
+      <div id="results-empty" class="empty-state">Run a search to see candidate companies here.</div>
+      <div id="results-list" class="card-list"></div>
+    </section>
+
+    <!-- CRM TAB -->
+    <section id="tab-crm" class="tab-panel">
+      <div class="crm-toolbar">
+        <button id="export-csv-btn" class="secondary-btn">Export CSV</button>
+      </div>
+      <div id="crm-empty" class="empty-state">Saved leads will appear here.</div>
+      <div id="crm-list" class="card-list"></div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section id="tab-settings" class="tab-panel">
+      <label class="field-label" for="api-key-input">OpenRouter API key</label>
+      <input type="password" id="api-key-input" placeholder="sk-or-v1-..." />
+      <p class="hint-text">Stored only in this browser (chrome.storage.local). Sent only directly to openrouter.ai.</p>
+
+      <label class="field-label" for="model-input">Model</label>
+      <input type="text" id="model-input" placeholder="anthropic/claude-sonnet-4.5" />
+      <p class="hint-text">Any OpenRouter model slug works, e.g. openai/gpt-4o-mini. See openrouter.ai/models.</p>
+
+      <label class="field-label" for="default-region-input">Default region</label>
+      <input type="text" id="default-region-input" placeholder="Used when a search doesn't specify one" />
+
+      <label class="field-label" for="custom-profile-input">Custom mode service profile</label>
+      <textarea id="custom-profile-input" rows="3" placeholder="Describe your services for the Custom search mode..."></textarea>
+
+      <label class="field-label" for="default-offering-input">Default offering (for "Sell a service" outreach)</label>
+      <textarea id="default-offering-input" rows="2" placeholder="e.g. a safety training management platform I built for HSE training centres"></textarea>
+      <p class="hint-text">Used as the default "what to sell" when generating outreach with the Sell objective. You can override it per-lead.</p>
+
+      <button id="save-settings-btn" class="primary-btn">Save settings</button>
+      <div id="settings-status" class="status-line"></div>
+
+      <hr class="divider" />
+
+      <label class="field-label">Saved offerings</label>
+      <p class="hint-text">Keep a few offerings on hand (e.g. HSE training delivery, your training-centre software, recruitment consulting) to pick from per-lead instead of retyping.</p>
+      <div id="offerings-list" class="offerings-list"></div>
+      <div class="inline-actions">
+        <input type="text" id="offering-name-input" placeholder="Offering name (e.g. Training centre software)" />
+      </div>
+      <textarea id="offering-desc-input" rows="2" placeholder="Short description used in the outreach prompt"></textarea>
+      <button id="add-offering-btn" class="secondary-btn wide-secondary">Add offering</button>
+
+      <hr class="divider" />
+
+      <label class="field-label">Gmail sending</label>
+      <p class="hint-text">"Send via Gmail" on a CRM lead sends directly from your own Google account (via OAuth) instead of opening your mail client. The first send will prompt a Google sign-in/consent popup. See the README for one-time setup (you need your own Google Cloud OAuth client ID).</p>
+      <button id="gmail-disconnect-btn" class="secondary-btn wide-secondary">Disconnect Google account</button>
+      <div id="gmail-disconnect-status" class="status-line"></div>
+
+      <hr class="divider" />
+
+      <label class="field-label">Excluded companies</label>
+      <p class="hint-text">Companies here are skipped in future searches. Mark a result "Not interested" to add one.</p>
+      <div id="excluded-list" class="offerings-list"></div>
+    </section>
+  </main>
+
+  <script src="js/popup.js" type="module"></script>
+</body>
+</html>

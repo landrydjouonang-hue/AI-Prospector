@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "AI Prospector \u2014 HSE & Agency Lead Finder",
+  "version": "1.2.0",
+  "description": "AI-powered B2B prospecting for HSE/safety training providers and web/marketing agencies hiring developers. Live web search + per-company needs/gap analysis + decision-maker contacts + goal-aware outreach + CRM + direct Gmail sending. Opens as a persistent side panel.",
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["storage", "sidePanel", "identity"],
+  "host_permissions": ["https://openrouter.ai/*", "https://gmail.googleapis.com/*"],
+  "oauth2": {
+    "client_id": "YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/gmail.send"]
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "background": {
+    "service_worker": "js/background.js",
+    "type": "module"
+  }
+}
